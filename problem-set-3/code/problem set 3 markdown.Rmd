@@ -1,3 +1,19 @@
+---
+title: "Problem Set 3 Delgado, Romero, Castillo"
+author: "Sergio Delgado, Daniel Romero, Carlos Castillo"
+date: "2023-12-08"
+output:
+  pdf_document: default
+  word_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Punto 1
+
+```{r}
 ## initial setup
 rm(list=ls())
 require(pacman)
@@ -35,10 +51,13 @@ df_resto <- rbindlist(l=lista_resto , use.names=T , fill=T)
 
 ## export
 export(df_resto,"/output/db_full.rds")
+```
 
+##Punto 2
 
-##punto 2
+primero realizamos una visualización de un gráfico de barras que muestre la diferencia en proporción entre honbres y mujeres en los hogares colombianos
 
+```{r pressure, echo=FALSE}
 rm(list=ls())
 
 install.packages(ggplot2)
@@ -46,8 +65,6 @@ install.packages(ggplot2)
 library(ggplot2)
 
 df_resto <- import("/output/db_full.rds")
-
-# Visualización 1: Gráfico de barras
 
 graph_1 <- df_resto %>% 
   group_by(P6020) %>% 
@@ -61,9 +78,12 @@ graph_1 <- df_resto %>%
   theme_classic()
 
   print(graph_1)
-  
-# Visualización 2: Gráfico de densidad
-  
+
+```
+
+Nuestra segunda visualización es un gráfico de densidad sobre hombres y mujeres que no hayan llegado a la tercera edad, es decir menores a 60 años
+
+```{r pressure, echo=FALSE}
 graph_2 <- filter(df_resto, !is.na(P6020) & P6040 < 60) %>% 
   ggplot(data=. , mapping = aes(x = P6030S3 , group = as.factor(P6020), fill = as.factor(P6020))) + 
   geom_density() + scale_fill_discrete(label = c("1"="hombre" , "2"="mujer") , name = "género") + 
@@ -71,6 +91,5 @@ graph_2 <- filter(df_resto, !is.na(P6020) & P6040 < 60) %>%
        title = "Hombres y mujeres que no han llegado a la tercera edad") + 
        theme_dark()
 print(graph_2)
-  
-  
 
+```
